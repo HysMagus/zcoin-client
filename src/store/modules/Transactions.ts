@@ -1,5 +1,12 @@
 import {cloneDeep, merge} from 'lodash';
-import {StateWallet, TransactionOutput, TransactionEvent, AddressBookItem} from '../../daemon/zcoind';
+import {
+    StateWallet,
+    TransactionOutput,
+    TransactionEvent,
+    AddressBookItem,
+    isValidStateWallet,
+    UnexpectedZcoindResponse
+} from '../../daemon/zcoind';
 
 import { createLogger } from '../../lib/logger'
 const logger = createLogger('zcoin:store:Transactions');
@@ -174,6 +181,11 @@ const actions = {
         }
 
         logger.info("Adding more items to the initialStateWallet cache...");
+
+        if (!isValidStateWallet(initialStateWallet)) {
+            throw new UnexpectedZcoindResponse('initial/stateWallet', initialStateWallet);
+        }
+
         cachedInitialStateWallets.push(initialStateWallet);
         lastStateWalletTime = (new Date()).getTime();
     },

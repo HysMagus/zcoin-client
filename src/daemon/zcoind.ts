@@ -303,7 +303,7 @@ export interface StateWallet {
         }
     }
 }
-function isValidStateWallet(x: any): x is StateWallet {
+export function isValidStateWallet(x: any): x is StateWallet {
     if (x === null || typeof x !== 'object' || x.addresses === null || typeof x.addresses !== 'object') {
         return false;
     }
